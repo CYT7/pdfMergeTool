@@ -5,9 +5,13 @@
 # @CreateTime: Nov 18, 2021
 # @Version : 1.0
 # ---
+import datetime
+
 from PySide2.QtCore import *
 from PySide2.QtWidgets import *
 from PIL import Image
+from PySide2.QtWidgets import QWidget, QGridLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, \
+    QGroupBox, QListWidget, QVBoxLayout, QSpacerItem
 from reportlab.lib.pagesizes import portrait
 from reportlab.pdfgen import canvas
 import PyPDF2
@@ -58,7 +62,6 @@ def merge_page(writer, merge_file):
     # 获取 PdfFileReader 对象
     pdf_file_reader = PyPDF2.PdfFileReader(merge_file)
     if pdf_file_reader.getIsEncrypted():
-        print(pdf_file_reader.getIsEncrypted())
         new_pdf = convert_pdf(merge_file)
         new_inputs = PyPDF2.PdfFileReader(new_pdf)
         num_pages = new_inputs.getNumPages()
@@ -73,193 +76,195 @@ def merge_page(writer, merge_file):
             writer.addPage(page_obj)  # 根据每页返回的 PageObject,写入到文件
 
 
-class ui_main(object):
+class UiWindows(object):
     # 设置界面
     def setupUi(self, main_windows):
-        # if not MainWindow.objectName():
+        # 如果不是主窗口对象
+        main_windows.resize(400, 300)
 
-        main_windows.resize(866, 663)
-        self.centralwidget = QWidget(main_windows)
-        self.centralwidget.setObjectName(u"centralwidget")
-        self.gridLayout_2 = QGridLayout(self.centralwidget)
-        self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.label = QLabel(self.centralwidget)
-        self.label.setObjectName(u"label")
+        self.central_widget = QWidget(main_windows)
+        self.central_widget.setObjectName(u"中央部件")
+        self.grid_layout1 = QGridLayout(self.central_widget)
+        self.grid_layout1.setObjectName(u"网格布局1")
+        self.horizontal_layout = QHBoxLayout()
+        self.horizontal_layout.setObjectName(u"水平布局")
+        self.label = QLabel(self.central_widget)
+        self.label.setObjectName(u"标签")
 
-        self.horizontalLayout.addWidget(self.label)
+        self.horizontal_layout.addWidget(self.label)
 
-        self.lineEdit_out = QLineEdit(self.centralwidget)
-        self.lineEdit_out.setObjectName(u"lineEdit_out")
+        self.line_edit = QLineEdit(self.central_widget)
+        self.line_edit.setObjectName(u"线编辑")
 
-        self.horizontalLayout.addWidget(self.lineEdit_out)
+        self.horizontal_layout.addWidget(self.line_edit)
 
-        self.pushButton_select = QPushButton(self.centralwidget)
-        self.pushButton_select.setObjectName(u"pushButton_select")
+        self.select_button = QPushButton(self.central_widget)
+        self.select_button.setObjectName(u"选择按钮")
 
-        self.horizontalLayout.addWidget(self.pushButton_select)
+        self.horizontal_layout.addWidget(self.select_button)
 
-        self.gridLayout_2.addLayout(self.horizontalLayout, 0, 0, 1, 1)
+        self.grid_layout1.addLayout(self.horizontal_layout, 0, 0, 1, 1)
 
-        self.groupBox = QGroupBox(self.centralwidget)
-        self.groupBox.setObjectName(u"groupBox")
-        self.gridLayout = QGridLayout(self.groupBox)
-        self.gridLayout.setObjectName(u"gridLayout")
-        self.listWidget_file = QListWidget(self.groupBox)
-        self.listWidget_file.setObjectName(u"listWidget_file")
+        self.group_box = QGroupBox(self.central_widget)
+        self.group_box.setObjectName(u"分组框")
+        self.grid_layout = QGridLayout(self.group_box)
+        self.grid_layout.setObjectName(u"网格布局")
+        self.list_control_file = QListWidget(self.group_box)
+        self.list_control_file.setObjectName(u"列表控件文件")
 
-        self.gridLayout.addWidget(self.listWidget_file, 0, 0, 1, 1)
+        self.grid_layout.addWidget(self.list_control_file, 0, 0, 1, 1)
 
-        self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.pushButton_add = QPushButton(self.groupBox)
-        self.pushButton_add.setObjectName(u"pushButton_add")
+        self.vertical_layout = QVBoxLayout()
+        self.vertical_layout.setObjectName(u"垂直布局")
+        self.add_button = QPushButton(self.group_box)
+        self.add_button.setObjectName(u"添加按钮")
 
-        self.verticalLayout.addWidget(self.pushButton_add)
+        self.vertical_layout.addWidget(self.add_button)
 
-        self.pushButton_delete = QPushButton(self.groupBox)
-        self.pushButton_delete.setObjectName(u"pushButton_delete")
+        self.delete_button = QPushButton(self.group_box)
+        self.delete_button.setObjectName(u"删除按钮")
 
-        self.verticalLayout.addWidget(self.pushButton_delete)
+        self.vertical_layout.addWidget(self.delete_button)
 
-        self.pushButton_up = QPushButton(self.groupBox)
-        self.pushButton_up.setObjectName(u"pushButton_up")
+        self.up_button = QPushButton(self.group_box)
+        self.up_button.setObjectName(u"上移按钮")
 
-        self.verticalLayout.addWidget(self.pushButton_up)
+        self.vertical_layout.addWidget(self.up_button)
 
-        self.pushButton_down = QPushButton(self.groupBox)
-        self.pushButton_down.setObjectName(u"pushButton_down")
+        self.down_button = QPushButton(self.group_box)
+        self.down_button.setObjectName(u"下移按钮")
 
-        self.verticalLayout.addWidget(self.pushButton_down)
+        self.vertical_layout.addWidget(self.down_button)
 
-        self.pushButton_clear = QPushButton(self.groupBox)
-        self.pushButton_clear.setObjectName(u"pushButton_clear")
+        self.clear_button = QPushButton(self.group_box)
+        self.clear_button.setObjectName(u"清空按钮")
 
-        self.verticalLayout.addWidget(self.pushButton_clear)
+        self.vertical_layout.addWidget(self.clear_button)
+        # 垂直间距器
+        self.vertical_spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.vertical_layout.addItem(self.vertical_spacer)
 
-        self.verticalLayout.addItem(self.verticalSpacer)
+        self.grid_layout.addLayout(self.vertical_layout, 0, 1, 1, 1)
 
-        self.gridLayout.addLayout(self.verticalLayout, 0, 1, 1, 1)
+        self.grid_layout1.addWidget(self.group_box, 1, 0, 1, 1)
+        # 水平布局2
+        self.horizontal_layout2 = QHBoxLayout()
+        self.horizontal_layout2.setObjectName(u"水平布局2")
+        self.action_button = QPushButton(self.central_widget)
+        self.action_button.setObjectName(u"执行按钮")
 
-        self.gridLayout_2.addWidget(self.groupBox, 1, 0, 1, 1)
+        self.horizontal_layout2.addWidget(self.action_button)
 
-        self.horizontalLayout_2 = QHBoxLayout()
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.pushButton_do = QPushButton(self.centralwidget)
-        self.pushButton_do.setObjectName(u"pushButton_do")
+        self.horizontal_spacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout_2.addWidget(self.pushButton_do)
+        self.horizontal_layout2.addItem(self.horizontal_spacer)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.grid_layout1.addLayout(self.horizontal_layout2, 2, 0, 1, 1)
 
-        self.horizontalLayout_2.addItem(self.horizontalSpacer)
-
-        self.gridLayout_2.addLayout(self.horizontalLayout_2, 2, 0, 1, 1)
-
-        self.gridLayout_2.setRowStretch(0, 1)
-        self.gridLayout_2.setRowStretch(1, 15)
-        self.gridLayout_2.setRowStretch(2, 1)
-        main_windows.setCentralWidget(self.centralwidget)
+        self.grid_layout1.setRowStretch(0, 1)
+        self.grid_layout1.setRowStretch(1, 15)
+        self.grid_layout1.setRowStretch(2, 1)
+        main_windows.setCentralWidget(self.central_widget)
 
         self.reset_ui(main_windows)
 
         main_windows.setWindowTitle(u"PDF合并工具")
         QMetaObject.connectSlotsByName(main_windows)
 
-        self.pushButton_select.clicked.connect(self.selectOutputFile)
-        self.pushButton_add.clicked.connect(self.addFile)
-        self.pushButton_delete.clicked.connect(self.deleteFile)
-        self.pushButton_clear.clicked.connect(self.clearFiles)
-        self.pushButton_do.clicked.connect(self.generatePdf)
-        self.pushButton_up.clicked.connect(self.pushUpFile)
-        self.pushButton_down.clicked.connect(self.pushDownFile)
+        self.select_button.clicked.connect(self.selectOutputFile)
+        self.add_button.clicked.connect(self.addFile)
+        self.delete_button.clicked.connect(self.deleteFile)
+        self.clear_button.clicked.connect(self.clearFiles)
+        self.action_button.clicked.connect(self.generatePdf)
+        self.up_button.clicked.connect(self.pushUpFile)
+        self.down_button.clicked.connect(self.pushDownFile)
 
     # 重译用户界面
     def reset_ui(self, main_windows):
         main_windows.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.label.setText(
-            QCoreApplication.translate("MainWindow", u"输出文件路径：", None))
-        self.pushButton_select.setText(QCoreApplication.translate("MainWindow", u"浏览", None))
-        self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"合并文件列表", None))
-        self.pushButton_add.setText(QCoreApplication.translate("MainWindow", u"添加", None))
-        self.pushButton_delete.setText(QCoreApplication.translate("MainWindow", u"删除", None))
-        self.pushButton_up.setText(QCoreApplication.translate("MainWindow", u"上移", None))
-        self.pushButton_down.setText(QCoreApplication.translate("MainWindow", u"下移", None))
-        self.pushButton_clear.setText(QCoreApplication.translate("MainWindow", u"清空", None))
-        self.pushButton_do.setText(QCoreApplication.translate("MainWindow", u"执行", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"输出文件路径：", None))
+        self.select_button.setText(QCoreApplication.translate("MainWindow", u"浏览", None))
+        self.group_box.setTitle(QCoreApplication.translate("MainWindow", u"合并文件列表", None))
+        self.add_button.setText(QCoreApplication.translate("MainWindow", u"添加", None))
+        self.delete_button.setText(QCoreApplication.translate("MainWindow", u"删除", None))
+        self.up_button.setText(QCoreApplication.translate("MainWindow", u"上移", None))
+        self.down_button.setText(QCoreApplication.translate("MainWindow", u"下移", None))
+        self.clear_button.setText(QCoreApplication.translate("MainWindow", u"清空", None))
+        self.action_button.setText(QCoreApplication.translate("MainWindow", u"执行", None))
 
     def selectOutputFile(self):
         dialog = QFileDialog(None, '请选择输出路径', '', '所有pdf文件 (*.pdf *.PDF)')
         dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
         if dialog.exec_():
             file_names = dialog.selectedFiles()
-            self.lineEdit_out.setText(file_names[0])
+            self.line_edit.setText(file_names[0])
 
     def addFile(self):
         dialog = QFileDialog(None, '请选择PDF文件', '', '所有pdf文件 (*.pdf *.PDF)')
         if dialog.exec_():
             file_names = dialog.selectedFiles()
-            self.listWidget_file.addItem(file_names[0])
+            self.list_control_file.addItem(file_names[0])
 
     def deleteFile(self):
-        del_item = self.listWidget_file.currentItem()
-        self.listWidget_file.takeItem(self.listWidget_file.row(del_item))
+        del_item = self.list_control_file.currentItem()
+        self.list_control_file.takeItem(self.list_control_file.row(del_item))
 
     def clearFiles(self):
-        self.listWidget_file.clear()
+        self.list_control_file.clear()
 
     def pushUpFile(self):
-        cur_item = self.listWidget_file.currentItem()
-        cur_row = self.listWidget_file.row(cur_item)
+        cur_item = self.list_control_file.currentItem()
+        cur_row = self.list_control_file.row(cur_item)
         if cur_row <= 0:
             return
         else:
-            txt1 = self.listWidget_file.item(cur_row - 1).text()
-            txt2 = self.listWidget_file.item(cur_row).text()
-            self.listWidget_file.item(cur_row - 1).setText(txt2)
-            self.listWidget_file.item(cur_row).setText(txt1)
-            self.listWidget_file.setCurrentRow(cur_row - 1)
+            txt1 = self.list_control_file.item(cur_row - 1).text()
+            txt2 = self.list_control_file.item(cur_row).text()
+            self.list_control_file.item(cur_row - 1).setText(txt2)
+            self.list_control_file.item(cur_row).setText(txt1)
+            self.list_control_file.setCurrentRow(cur_row - 1)
 
     def pushDownFile(self):
-        cur_item = self.listWidget_file.currentItem()
-        cur_row = self.listWidget_file.row(cur_item)
-        if cur_row >= self.listWidget_file.count() - 1 or cur_row < 0:
+        cur_item = self.list_control_file.currentItem()
+        cur_row = self.list_control_file.row(cur_item)
+        if cur_row >= self.list_control_file.count() - 1 or cur_row < 0:
             return
         else:
-            txt1 = self.listWidget_file.item(cur_row + 1).text()
-            txt2 = self.listWidget_file.item(cur_row).text()
-            self.listWidget_file.item(cur_row + 1).setText(txt2)
-            self.listWidget_file.item(cur_row).setText(txt1)
-            self.listWidget_file.setCurrentRow(cur_row + 1)
+            txt1 = self.list_control_file.item(cur_row + 1).text()
+            txt2 = self.list_control_file.item(cur_row).text()
+            self.list_control_file.item(cur_row + 1).setText(txt2)
+            self.list_control_file.item(cur_row).setText(txt1)
+            self.list_control_file.setCurrentRow(cur_row + 1)
 
     def generatePdf(self):
-        output_file = self.lineEdit_out.text()
+        start_time = datetime.datetime.now()  # 开始时间
+        output_file = self.line_edit.text()
         if not output_file:
             warn = QMessageBox()
             warn.warning(None, '提示', '请输入输出路径！')
             return
-        merge_files = [self.listWidget_file.item(index).text() for index in range(self.listWidget_file.count())]
+        merge_files = [self.list_control_file.item(index).text() for index in range(self.list_control_file.count())]
         if not merge_files:
             warn = QMessageBox()
-            warn.warning(None, '提示', '请选择需要合并的pdf文件！')
+            warn.warning(None, '提示', '请选择需要合并的pdf文件！', button0=None, button1=None)
             return
         pdf_file_writer = PyPDF2.PdfFileWriter()
         for merge_file in merge_files:
             merge_page(pdf_file_writer, merge_file)
 
         pdf_file_writer.write(open(output_file, 'wb'))
+        end_time = datetime.datetime.now()  # 结束时间
+        print('合并时间=', (end_time - start_time).seconds, 's')
         tip = QMessageBox()
-        tip.information(None, '提示', '合并完成！')
+        tip.information(None, '提示', '合并完成！', button0=None)
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
+    app = QApplication()
     main_window = QMainWindow()
 
-    ui = ui_main()
+    ui = UiWindows()
     ui.setupUi(main_window)
     main_window.show()
     sys.exit(app.exec_())
