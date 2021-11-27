@@ -35,7 +35,7 @@ def convert_pdf(pdf_file):
     pdf = fitz.open(pdf_file)
     for pg in range(pdf.page_count):
         page = pdf[pg]
-        zoom_x, zoom_y = 1.0, 1.0
+        zoom_x, zoom_y = 1.3, 1.3
         rotate = int(0)
         trans = fitz.Matrix(zoom_x, zoom_y).prerotate(rotate)
         pm = page.get_pixmap(matrix=trans, alpha=False)
@@ -73,7 +73,7 @@ def merge_page(writer, merge_file):
 class UiWindows(object):
     # 设置界面
     def __init__(self, main_windows):
-        main_windows.resize(400, 300)
+        main_windows.resize(400, 400)
         self.central_widget = QWidget(main_windows)
         self.grid_layout1 = QGridLayout(self.central_widget)
         self.horizontal_layout = QHBoxLayout()
