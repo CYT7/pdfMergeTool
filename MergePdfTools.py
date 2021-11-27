@@ -6,7 +6,6 @@
 # @Version : 1.0
 # ---
 import datetime
-
 from PySide2.QtCore import *
 from PySide2.QtWidgets import *
 from PIL import Image
@@ -172,7 +171,7 @@ class UiWindows(object):
         main_windows.setWindowTitle(u"PDF合并工具")
         QMetaObject.connectSlotsByName(main_windows)
 
-        self.select_button.clicked.connect(self.selectOutputFile)
+        self.select_button.clicked.connect(self.saveFile)
         self.add_button.clicked.connect(self.addFile)
         self.delete_button.clicked.connect(self.deleteFile)
         self.clear_button.clicked.connect(self.clearFiles)
@@ -182,8 +181,8 @@ class UiWindows(object):
 
     # 重译用户界面
     def reset_ui(self, main_windows):
-        main_windows.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"输出文件路径：", None))
+        main_windows.setWindowTitle(QCoreApplication.translate('MainWindow', u'MainWindow', None,))
+        self.label.setText(QCoreApplication.translate("main_windows", u"输出文件路径", None))
         self.select_button.setText(QCoreApplication.translate("MainWindow", u"浏览", None))
         self.group_box.setTitle(QCoreApplication.translate("MainWindow", u"合并文件列表", None))
         self.add_button.setText(QCoreApplication.translate("MainWindow", u"添加", None))
@@ -193,18 +192,30 @@ class UiWindows(object):
         self.clear_button.setText(QCoreApplication.translate("MainWindow", u"清空", None))
         self.action_button.setText(QCoreApplication.translate("MainWindow", u"执行", None))
 
-    def selectOutputFile(self):
-        dialog = QFileDialog(None, '请选择输出路径', '', '所有pdf文件 (*.pdf *.PDF)')
-        dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
-        if dialog.exec_():
-            file_names = dialog.selectedFiles()
+    def saveFile(self):
+        # 对话框标题
+        file_dialog = QFileDialog(None, '请选择输出路径')
+        file_dialog.setNameFilter('所有pdf文件 (*.pdf *.PDF)')
+        # 筛选文件类型
+        file_dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
+        if file_dialog.exec_():
+            file_names = file_dialog.selectedFiles()
             self.line_edit.setText(file_names[0])
 
     def addFile(self):
-        dialog = QFileDialog(None, '请选择PDF文件', '', '所有pdf文件 (*.pdf *.PDF)')
-        if dialog.exec_():
-            file_names = dialog.selectedFiles()
-            self.list_control_file.addItem(file_names[0])
+        # 对话框标题
+        file_dialog = QFileDialog(None, '请选择PDF文件')
+        # 筛选文件类型
+        file_dialog.setNameFilter("所有pdf文件 (*.pdf *.PDF)")
+        # 多文件模式
+        file_dialog.setViewMode(QFileDialog.Detail)
+        file_dialog.setFileMode(QFileDialog.ExistingFiles)
+        if file_dialog.exec_():
+            # 所选PDF文件列表
+            file_names = file_dialog.selectedFiles()
+            for file_name in file_names:
+                print(file_name)
+                self.list_control_file.addItem(file_name)
 
     def deleteFile(self):
         del_item = self.list_control_file.currentItem()
@@ -241,12 +252,12 @@ class UiWindows(object):
         start_time = datetime.datetime.now()  # 开始时间
         output_file = self.line_edit.text()
         if not output_file:
-            warn = QMessageBox()
-            warn.warning(None, '提示', '请输入输出路径！')
+            warn = QMessageBox(None, None, None)
+            warn.warning(None, '提示', '请输入输出路径！', None, None)
             return
         merge_files = [self.list_control_file.item(index).text() for index in range(self.list_control_file.count())]
         if not merge_files:
-            warn = QMessageBox()
+            warn = QMessageBox(None, None, None)
             warn.warning(None, '提示', '请选择需要合并的pdf文件！', button0=None, button1=None)
             return
         pdf_file_writer = PyPDF2.PdfFileWriter()
@@ -256,13 +267,13 @@ class UiWindows(object):
         pdf_file_writer.write(open(output_file, 'wb'))
         end_time = datetime.datetime.now()  # 结束时间
         print('合并时间=', (end_time - start_time).seconds, 's')
-        tip = QMessageBox()
+        tip = QMessageBox(None, None, None)
         tip.information(None, '提示', '合并完成！', button0=None)
 
 
 if __name__ == '__main__':
     app = QApplication()
-    main_window = QMainWindow()
+    main_window = QMainWindow(None)
 
     ui = UiWindows()
     ui.setupUi(main_window)
