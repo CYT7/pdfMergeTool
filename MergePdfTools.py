@@ -5,14 +5,12 @@
 # @CreateTime: Nov 18, 2021
 # @Version : 1.5
 # ---
-import datetime
 from PySide2.QtCore import *
 from PySide2.QtWidgets import *
 from PIL import Image
-from PySide2.QtWidgets import QWidget, QGridLayout, QHBoxLayout, QLabel, QLineEdit, QPushButton, \
-    QGroupBox, QListWidget, QVBoxLayout, QSpacerItem
 from reportlab.lib.pagesizes import portrait
 from reportlab.pdfgen import canvas
+import datetime
 import PyPDF2
 import sys
 import fitz
@@ -20,7 +18,6 @@ import os
 
 if not sys.warnoptions:
     import warnings
-
     warnings.simplefilter("ignore")
 
 
