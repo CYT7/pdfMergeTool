@@ -42,10 +42,10 @@ def convert_pdf(pdf_file):
         pm.save(r'./tu' + '{:02}.png'.format(pg))
     img_list = get_img_files(img_path='./', file_type='.png')
     out_path = r'./1.pdf'
-    (max_w, max_h) = Image.open(img_list[0]).size
-    c = canvas.Canvas(out_path, pagesize=portrait((max_w, max_h)))
+    width, height = Image.open(img_list[0]).size
+    c = canvas.Canvas(out_path, pagesize=portrait((width, height)))
     for i in range(len(img_list)):
-        c.drawImage(img_list[i], 0, 0, max_w, max_h)
+        c.drawImage(img_list[i], 0, 0, width, height)
         c.showPage()
         os.remove(img_list[i])
     c.save()
@@ -55,6 +55,7 @@ def convert_pdf(pdf_file):
 def merge_page(writer, merge_file):
     # 获取 PdfFileReader 对象
     pdf_file_reader = PyPDF2.PdfFileReader(merge_file)
+    # 判断pdf是否存在密码
     if pdf_file_reader.getIsEncrypted():
         new_pdf = convert_pdf(merge_file)
         new_inputs = PyPDF2.PdfFileReader(new_pdf)
@@ -97,7 +98,6 @@ class UiWindows(object):
     def setupUi(self, main_windows):
         # 如果不是主窗口对象
         main_windows.resize(400, 300)
-
         self.central_widget.setObjectName(u"中央部件")
         self.grid_layout1.setObjectName(u"网格布局1")
         self.horizontal_layout.setObjectName(u"水平布局")
